@@ -12,9 +12,17 @@ const PORT = process.env.PORT || 3000
 
 //middleware
 app.use(express.json())
+
+// CORS configuration for development and production
+const allowedOrigins = [
+    'http://localhost:5173',  // Local development
+    'http://localhost:3000',   // Alternative local port
+    process.env.FRONTEND_URL   // Production Vercel URL (set in .env)
+].filter(Boolean)
+
 app.use(cors({
-    origin:'http://localhost:5173',
-    credentials:true
+    origin: allowedOrigins,
+    credentials: true
 }))
 
 app.use('/api/v1/user', userRoute)
