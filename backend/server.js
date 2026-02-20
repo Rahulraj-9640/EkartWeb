@@ -32,7 +32,13 @@ app.use('/api/v1/orders', orderRoute)
 
 // http://localhost:8000/api/v1/user/register
 
-app.listen(PORT,()=>{
-    connectDB()
-    console.log(`Server is listening at port:${PORT}`);
-})
+connectDB()
+    .then(() => {
+        app.listen(PORT, () => {
+            console.log(`Server is listening at port: ${PORT}`)
+        })
+    })
+    .catch((error) => {
+        console.error("Database connection failed ❌", error)
+        process.exit(1)
+    })
