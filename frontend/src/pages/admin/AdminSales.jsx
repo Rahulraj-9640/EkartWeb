@@ -15,7 +15,8 @@ const AdminSales = () => {
   const fetchStats = async () => {
     try {
       const accessToken = localStorage.getItem("accessToken")
-      const res = await axios.get(`${import.meta.env.VITE_URL}/api/v1/orders/sales`, {
+      const backendURL = import.meta.env.VITE_URL || 'http://localhost:8000'
+      const res = await axios.get(`${backendURL}/api/v1/orders/sales`, {
         headers: {
           Authorization: `Bearer ${accessToken}`
         }

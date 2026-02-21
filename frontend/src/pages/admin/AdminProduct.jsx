@@ -97,7 +97,8 @@ const AdminProduct = () => {
       })
 
     try {
-      const res = await axios.put(`http://localhost:8000/api/v1/product/update/${editProduct?._id}`, formData, {
+      const backendURL = import.meta.env.VITE_URL || 'http://localhost:8000'
+      const res = await axios.put(`${backendURL}/api/v1/product/update/${editProduct?._id}`, formData, {
         headers: {
           Authorization: `Bearer ${accessToken}`
         }

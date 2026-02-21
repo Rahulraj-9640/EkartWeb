@@ -44,8 +44,9 @@ const AddressForm = () => {
 
     const handlePayment = async () => {
         const accessToken = localStorage.getItem("accessToken")
+        const backendURL = import.meta.env.VITE_URL || 'http://localhost:8000'
         try {
-            const { data } = await axios.post(`${import.meta.env.VITE_URL}/api/v1/orders/create-order`, {
+            const { data } = await axios.post(`${backendURL}/api/v1/orders/create-order`, {
                 products: cart?.items?.map(item => ({
                     productId: item.productId._id,
                     quantity: item.quantity
@@ -71,7 +72,7 @@ const AddressForm = () => {
                 description: "Order Payment",
                 handler: async function (response) {
                     try {
-                        const verifyRes = await axios.post(`${import.meta.env.VITE_URL}/api/v1/orders/verify-payment`, response, {
+                        const verifyRes = await axios.post(`${backendURL}/api/v1/orders/verify-payment`, response, {
                             headers: { Authorization: `Bearer ${accessToken}` }
                         })
 
@@ -89,7 +90,7 @@ const AddressForm = () => {
                 modal: {
                     ondismiss: async function () {
                         // Handle user closing the popup
-                        await axios.post(`${import.meta.env.VITE_URL}/api/v1/orders/verify-payment`, {
+                        await axios.post(`${backendURL}/api/v1/orders/verify-payment`, {
                             razorpay_order_id: data.order.id,
                             paymentFailed: true
                         }, {
@@ -110,7 +111,7 @@ const AddressForm = () => {
 
             // Listen for payment failures
             rzp.on("payment.failed", async function (response) {
-                await axios.post(`${import.meta.env.VITE_URL}/api/v1/orders/verify-payment`, {
+                await axios.post(`${backendURL}/api/v1/orders/verify-payment`, {
                     razorpay_order_id: data.order.id,
                     paymentFailed: true
                 }, {
