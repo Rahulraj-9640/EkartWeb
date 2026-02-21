@@ -10,6 +10,12 @@ import persistStore from 'redux-persist/es/persistStore'
 
 let persistor = persistStore(store)
 
+// Debug: Log environment variables
+console.log('🌍 Environment Configuration:')
+console.log('Backend URL:', import.meta.env.VITE_URL || 'http://localhost:8000')
+console.log('Razorpay Key:', import.meta.env.VITE_RAZORPAY_KEY_ID || 'Not set')
+console.log('Environment:', import.meta.env.MODE)
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Provider store={store}>
