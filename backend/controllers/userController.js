@@ -9,19 +9,25 @@ import cloudinary from "../utils/cloudinary.js";
 export const register = async (req, res) => {
     try {
         const { firstName, lastName, email, password } = req.body;
+        
+        // Validation
         if (!firstName || !lastName || !email || !password) {
-            res.status(400).json({
+            return res.status(400).json({
                 success: false,
                 message: 'All fields are required'
             })
         }
+        
+        // Check if user already exists
         const user = await User.findOne({ email })
         if (user) {
-            res.status(400).json({
+            return res.status(400).json({
                 success: false,
                 message: 'User already exists'
             })
         }
+        
+        // Hash password and create user
         const hashedPassword = await bcrypt.hash(password, 10)
         const newUser = await User.create({
             firstName,
@@ -29,16 +35,28 @@ export const register = async (req, res) => {
             email,
             password: hashedPassword
         })
+        
+        // Generate token and send email
         const token = jwt.sign({ id: newUser._id }, process.env.SECRET_KEY, { expiresIn: '10m' })
-        verifyEmail(token, email) // send email here
+        
+        try {
+            await verifyEmail(token, email) // send email here
+            console.log('✅ Verification email sent to:', email)
+        } catch (emailError) {
+            console.error('⚠️ Email sending failed:', emailError.message)
+            // Still allow registration even if email fails
+        }
+        
         newUser.token = token
         await newUser.save()
+        
         return res.status(201).json({
             success: true,
-            message: 'User registered successfully',
+            message: 'User registered successfully. Please check your email to verify your account.',
             user: newUser
         })
     } catch (error) {
+        console.error('❌ Registration error:', error.message)
         res.status(500).json({
             success: false,
             message: error.message
@@ -50,13 +68,15 @@ export const verify = async (req, res) => {
     try {
         const authHeader = req.headers.authorization
         if (!authHeader || !authHeader.startsWith("Bearer ")) {
-            res.status(400).json({
+            return res.status(400).json({
                 success: false,
                 message: 'Authorization token is missing or invalid'
             })
         }
+        
         const token = authHeader.split(" ")[1] // [Bearer, sdkj8dfkj8kjds]
         let decoded
+        
         try {
             decoded = jwt.verify(token, process.env.SECRET_KEY)
         } catch (error) {
@@ -71,6 +91,7 @@ export const verify = async (req, res) => {
                 message: 'Token verification failed'
             })
         }
+        
         const user = await User.findById(decoded.id)
         if (!user) {
             return res.status(400).json({
@@ -78,14 +99,17 @@ export const verify = async (req, res) => {
                 message: 'User not found'
             })
         }
+        
         user.token = null
         user.isVerified = true
         await user.save()
+        
         return res.status(200).json({
             success: true,
-            message: 'Email verified successfully'
+            message: 'Email verified successfully. You can now login!'
         })
     } catch (error) {
+        console.error('❌ Email verification error:', error.message)
         res.status(500).json({
             success: false,
             message: error.message

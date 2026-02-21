@@ -39,7 +39,13 @@ const Signup = () => {
 
     const submitHandler = async(e)=>{
         e.preventDefault()
-        console.log(formData);
+        
+        // Validate form data
+        if (!formData.firstName || !formData.lastName || !formData.email || !formData.password) {
+            toast.error('All fields are required')
+            return
+        }
+        
         try {
             setLoading(true)
             const backendURL = import.meta.env.VITE_URL || 'http://localhost:8000'
@@ -48,13 +54,17 @@ const Signup = () => {
                     "Content-Type":"application/json"
                 }
             })
+            
             if(res.data.success){
+                toast.success('✅ Account created! Please check your email to verify.')
+                // Reset form
+                setFormData({ firstName: "", lastName: "", email: "", password: "" })
                 navigate('/verify')
-                toast.success(res.data.message)
             }
         } catch (error) {
-            console.log(error)
-            toast.error(error.response.data.message)
+            const errorMessage = error.response?.data?.message || error.message || 'Registration failed'
+            console.error('Signup error:', errorMessage)
+            toast.error(errorMessage)
         } finally{
             setLoading(false)
         }
