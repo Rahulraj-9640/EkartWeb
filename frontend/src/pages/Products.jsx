@@ -28,7 +28,7 @@ const Products = () => {
     const getAllProducts = async()=>{
         try {
             setLoading(true)
-            const res = await axios.get(`http://localhost:8000/api/v1/product/getallproducts`)
+            const res = await axios.get(`https://ekartweb-lfkn.onrender.com/api/v1/product/getallproducts`)
             if(res.data.success){
                 setAllProducts(res.data.products)
                 dispatch(setProducts(res.data.products))

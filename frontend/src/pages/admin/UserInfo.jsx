@@ -7,7 +7,6 @@ import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Input } from '@/components/ui/input'
 import { useDispatch, useSelector } from 'react-redux'
-import store from '@/redux/store'
 import axios from 'axios'
 import { toast } from 'sonner'
 import { setUser } from '@/redux/userSlice'
@@ -55,7 +54,7 @@ const UserInfo = () => {
         formData.append("file", file)   // image file for backend multer
       }
 
-      const res = await axios.put(`http://localhost:8000/api/v1/user/update/${userId}`, formData, {
+      const res = await axios.put(`https://ekartweb-lfkn.onrender.com/api/v1/user/update/${userId}`, formData, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
           "Content-Type": "multipart/form-data"
@@ -75,7 +74,7 @@ const UserInfo = () => {
 
   const getUserDetails = async ()=>{
     try {
-      const res = await axios.get(`http://localhost:8000/api/v1/user/get-user/${userId}`)
+      const res = await axios.get(`https://ekartweb-lfkn.onrender.com/api/v1/user/get-user/${userId}`)
       if(res.data.success){
         setUpdateUser(res.data.user)
       }

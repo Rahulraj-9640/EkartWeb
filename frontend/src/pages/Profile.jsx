@@ -78,7 +78,7 @@ const Profile = () => {
                 formData.append("file", file)   // image file for backend multer
             }
 
-            const res = await axios.put(`http://localhost:8000/api/v1/user/update/${userId}`, formData, {
+            const res = await axios.put(`https://ekartweb-lfkn.onrender.com/api/v1/user/update/${userId}`, formData, {
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
                     "Content-Type": "multipart/form-data"
