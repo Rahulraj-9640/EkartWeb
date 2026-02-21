@@ -13,6 +13,7 @@ import { toast } from "sonner"
 import axios, { all } from "axios"
 import { useDispatch, useSelector } from "react-redux"
 import { setProducts } from "@/redux/productSlice"
+import apiClient from "@/utils/apiClient"
 
 const Products = () => {
     const {products} = useSelector(store=>store.product)
@@ -28,14 +29,14 @@ const Products = () => {
     const getAllProducts = async()=>{
         try {
             setLoading(true)
-            const res = await axios.get(`https://ekartweb-lfkn.onrender.com/api/v1/product/getallproducts`)
+            const res = await apiClient.get(`/api/v1/product/getallproducts`)
             if(res.data.success){
                 setAllProducts(res.data.products)
                 dispatch(setProducts(res.data.products))
             }
         } catch (error) {
-            console.log(error)
-            toast.error(error.response.data.message)
+            console.error('API Error:', error)
+            toast.error(error.response?.data?.message || 'Failed to fetch products')
         } finally {
             setLoading(false)
         }

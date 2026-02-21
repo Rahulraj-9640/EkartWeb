@@ -54,7 +54,8 @@ const UserInfo = () => {
         formData.append("file", file)   // image file for backend multer
       }
 
-      const res = await axios.put(`https://ekartweb-lfkn.onrender.com/api/v1/user/update/${userId}`, formData, {
+      const backendURL = import.meta.env.VITE_URL || 'http://localhost:8000'
+      const res = await axios.put(`${backendURL}/api/v1/user/update/${userId}`, formData, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
           "Content-Type": "multipart/form-data"
@@ -74,7 +75,8 @@ const UserInfo = () => {
 
   const getUserDetails = async ()=>{
     try {
-      const res = await axios.get(`https://ekartweb-lfkn.onrender.com/api/v1/user/get-user/${userId}`)
+      const backendURL = import.meta.env.VITE_URL || 'http://localhost:8000'
+      const res = await axios.get(`${backendURL}/api/v1/user/get-user/${userId}`)
       if(res.data.success){
         setUpdateUser(res.data.user)
       }

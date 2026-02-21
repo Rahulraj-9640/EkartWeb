@@ -17,8 +17,11 @@ app.use(express.json())
 const allowedOrigins = [
     'http://localhost:5173',  // Local development
     'http://localhost:3000',   // Alternative local port
+    'http://localhost:5174',   // Another local port
     process.env.FRONTEND_URL   // Production Vercel URL (set in .env)
 ].filter(Boolean)
+
+console.log('Allowed Origins:', allowedOrigins)
 
 app.use(cors({
     origin: allowedOrigins,

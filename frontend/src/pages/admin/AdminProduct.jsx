@@ -117,7 +117,8 @@ const AdminProduct = () => {
   const deleteProductHandler = async (productId) => {
     try {
       const remainingProducts = products.filter((product) => product._id !== productId)
-      const res = await axios.delete(`https://ekartweb-lfkn.onrender.com/api/v1/product/delete/${productId}`, {
+      const backendURL = import.meta.env.VITE_URL || 'http://localhost:8000'
+      const res = await axios.delete(`${backendURL}/api/v1/product/delete/${productId}`, {
         headers: {
           Authorization: `Bearer ${accessToken}`
         }

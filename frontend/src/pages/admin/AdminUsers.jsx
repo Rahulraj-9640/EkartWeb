@@ -14,7 +14,8 @@ const AdminUsers = () => {
   const getAllUsers = async () => {
     const accessToken = localStorage.getItem("accessToken")
     try {
-      const res = await axios.get(`https://ekartweb-lfkn.onrender.com/api/v1/user/all-user`, {
+      const backendURL = import.meta.env.VITE_URL || 'http://localhost:8000'
+      const res = await axios.get(`${backendURL}/api/v1/user/all-user`, {
         headers:{
           Authorization:`Bearer ${accessToken}`
         }

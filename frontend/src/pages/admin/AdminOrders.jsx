@@ -10,7 +10,8 @@ const AdminOrders = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const { data } = await axios.get("https://ekartweb-lfkn.onrender.com/api/v1/orders/all", {
+        const backendURL = import.meta.env.VITE_URL || 'http://localhost:8000'
+        const { data } = await axios.get(`${backendURL}/api/v1/orders/all`, {
           headers: { Authorization: `Bearer ${accessToken}` },
         });
         if (data.success) setOrders(data.orders);
