@@ -13,13 +13,29 @@ export const sendOTPMail = async(otp, email) => {
     const mailConfigurations = {
         from: process.env.MAIL_USER,
         to: email,
-        subject: 'Password Reset OTP',
-        html:`<p>Your OTP for password reset is:<b>${otp}</b></p>`
+        subject: 'Ekart - Password Reset OTP',
+        html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                <h2>Password Reset Request</h2>
+                <p>We received a request to reset your Ekart account password.</p>
+                <p>Use this One-Time Password (OTP) to reset your password:</p>
+                <h1 style="color: #F47286; letter-spacing: 2px; font-size: 32px; margin: 20px 0;">${otp}</h1>
+                <p>This OTP is valid for 10 minutes only.</p>
+                <p>If you didn't request this, please ignore this email.</p>
+                <p>Thanks,<br>Ekart Team</p>
+            </div>
+        `
     };
 
-    transporter.sendMail(mailConfigurations, function (error, info) {
-        if (error) throw Error(error);
-        console.log('OTP Sent Successfully');
-        console.log(info);
+    return new Promise((resolve, reject) => {
+        transporter.sendMail(mailConfigurations, function (error, info) {
+            if (error) {
+                console.error('❌ OTP Email sending failed:', error.message)
+                reject(error);
+            } else {
+                console.log('✅ OTP Email Sent Successfully to:', email);
+                resolve(info);
+            }
+        });
     });
 }

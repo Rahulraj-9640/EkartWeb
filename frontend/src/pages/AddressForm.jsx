@@ -61,7 +61,10 @@ const AddressForm = () => {
 
             if (!data.success) return toast.error("Something went wrong")
 
-            console.log("Razorpay data:", data);
+            // Debug in development only
+            if (import.meta.env.MODE === 'development') {
+                console.log("Order created:", data.order.id);
+            }
 
             const options = {
                 key: import.meta.env.VITE_RAZORPAY_KEY_ID,

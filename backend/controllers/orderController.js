@@ -93,7 +93,7 @@ export const verifyPayment = async (req, res) => {
 
 export const getMyOrder = async (req, res) => {
     try {
-        const userId = req.body;
+        const userId = req.user._id;  // Get from authenticated user, not body
         const orders = await Order.find({user:userId})
         .populate({path:"products.productId", select:"productName productPrice productImg"})
         .populate("user", "firstName lastName email")
