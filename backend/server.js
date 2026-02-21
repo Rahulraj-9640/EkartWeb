@@ -18,14 +18,25 @@ const allowedOrigins = [
     'http://localhost:5173',  // Local development
     'http://localhost:3000',   // Alternative local port
     'http://localhost:5174',   // Another local port
-    process.env.FRONTEND_URL   // Production Vercel URL (set in .env)
+    'https://ekart-web-five.vercel.app',  // Production Vercel URL
+    process.env.FRONTEND_URL?.trim()   // Additional frontend URL from .env
 ].filter(Boolean)
 
-console.log('Allowed Origins:', allowedOrigins)
+console.log('🔐 CORS Allowed Origins:', allowedOrigins)
 
 app.use(cors({
-    origin: allowedOrigins,
-    credentials: true
+    origin: (origin, callback) => {
+        console.log('📍 Request origin:', origin)
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true)
+        } else {
+            console.log('❌ CORS rejected origin:', origin)
+            callback(new Error('CORS policy violation'))
+        }
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 }))
 
 app.use('/api/v1/user', userRoute)
