@@ -11,7 +11,7 @@ export const verifyEmail = async (token, email, name = "User") => {
     const verificationLink = `${frontendURL}/verify/${token}`;
 
     await resend.emails.send({
-      from: "onboarding@resend.dev",   // free account default sender
+      from: "Ekart <onboarding@resend.dev>",   // free account default sender
       to: email,
       subject: "Verify Your Email - Ekart",
       html: `
