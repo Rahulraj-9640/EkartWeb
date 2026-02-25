@@ -3,7 +3,7 @@ import "dotenv/config";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export const verifyEmail = async (token, email, name = "User") => {
+export const verifyEmail = async (token, email, firstName = "User") => {
   try {
     const frontendURL =
       process.env.FRONTEND_URL || "http://localhost:5173";
@@ -36,7 +36,7 @@ export const verifyEmail = async (token, email, name = "User") => {
           <!-- Body -->
           <tr>
             <td style="padding:30px;">
-              <h2 style="color:#111827;">Hi ${name}, 👋</h2>
+              <h2 style="color:#111827;">Hi ${firstName}, 👋</h2>
 
               <p style="color:#4b5563;font-size:16px;line-height:1.6;">
                 Thank you for signing up with <strong>Ekart</strong>.
