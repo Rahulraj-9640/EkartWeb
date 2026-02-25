@@ -42,6 +42,8 @@ export const register = async (req, res) => {
         try {
             await verifyEmail(token, email) // send email here
             console.log('✅ Verification email sent to:', email)
+            console.log("Token: ",token);
+            
         } catch (emailError) {
             console.error('⚠️ Email sending failed:', emailError.message)
             // Still allow registration even if email fails
