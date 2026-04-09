@@ -18,7 +18,7 @@ const allowedOrigins = [
     'http://localhost:5173',  // Local development
     'http://localhost:3000',   // Alternative local port
     'http://localhost:5174',   // Another local port
-    'https://ekart-web-five.vercel.app',  // Production Vercel URL
+    'https://ekart-rahul.vercel.app',  // Production Vercel URL
     process.env.FRONTEND_URL?.trim()   // Additional frontend URL from .env
 ].filter(Boolean)
 
